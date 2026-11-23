@@ -1,0 +1,31 @@
+@startuml casos_de_uso
+left to right direction
+skinparam packageStyle rectangle
+title Casos de uso - ConectaMich
+
+actor "Ciudadano" as CIU
+actor "Autoridad\n(Dashboard)" as AUT
+
+rectangle "Sistema ConectaMich" {
+  usecase "Registrarse / Iniciar sesion" as UC1
+  usecase "Ver mapa metropolitano" as UC2
+  usecase "Filtrar por categoria / estado" as UC3
+  usecase "Crear reporte (fotos + GPS)" as UC4
+  usecase "Ver mis reportes" as UC5
+  usecase "Ver detalle y seguimiento" as UC6
+  usecase "Calificar la atencion" as UC7
+  usecase "Recibir notificaciones" as UC8
+  usecase "Actualizar estado del reporte" as UC9
+}
+
+CIU --> UC1
+CIU --> UC2
+CIU --> UC3
+CIU --> UC4
+CIU --> UC5
+CIU --> UC6
+CIU --> UC7
+CIU --> UC8
+AUT --> UC9
+UC9 ..> UC8 : <<dispara>>
+@enduml

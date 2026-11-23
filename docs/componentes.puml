@@ -1,0 +1,41 @@
+@startuml componentes
+skinparam componentStyle rectangle
+title Arquitectura de componentes - ConectaMich
+
+actor "Ciudadano" as CIU
+actor "Autoridad" as AUT
+
+package "App movil (Expo / React Native)" {
+  component "Pantallas\nInicio - Reportar - MisReportes - Detalle" as SCR
+  component "AuthContext (sesion)" as AUTH
+  component "Capa lib\nsupabase - reportes - push - notifications" as LIB
+  component "Modulos nativos\nLocation - ImagePicker - Maps - Notifications" as NAT
+}
+
+package "Supabase (Backend)" {
+  component "Auth" as SBAUTH
+  database "Postgres\nreportes - push_tokens (+ RLS)" as DB
+  database "Storage\nreportes-fotos - avatars" as ST
+  component "Trigger notify_estado\n+ pg_net" as TRG
+}
+
+package "Servicios externos" {
+  component "Google Maps SDK" as GM
+  component "Expo Push" as EP
+  component "Firebase Cloud Messaging" as FCM
+}
+
+CIU --> SCR : usa
+SCR --> AUTH
+SCR --> LIB
+SCR --> NAT
+AUTH --> SBAUTH : sesion
+LIB --> DB : insert / select
+LIB --> ST : fotos / avatar
+NAT --> GM : tiles / GPS
+AUT --> DB : UPDATE estado
+DB --> TRG
+TRG --> EP : HTTP
+EP --> FCM
+FCM --> NAT : push
+@enduml

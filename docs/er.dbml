@@ -1,0 +1,37 @@
+// ConectaMich - Modelo entidad-relacion
+// Pegar en https://dbdiagram.io  (Menu: Import / o escribir directo)
+
+Table usuarios {
+  id uuid [pk, note: 'auth.users de Supabase']
+  email text
+  nombre text
+  avatar_url text
+}
+
+Table reportes {
+  id uuid [pk]
+  user_id uuid [not null]
+  folio text [unique, not null]
+  categoria text [note: 'baches | alumbrado | agua | basura | arbol | otros']
+  categoria_otro text [note: 'texto libre cuando categoria = otros']
+  titulo text [not null]
+  descripcion text
+  direccion text
+  estado text [note: 'recibido | en_curso | resuelto']
+  prioridad text
+  municipio text
+  dependencia text
+  lat float8
+  lng float8
+  imagenes text [note: 'text[] con URLs de Storage']
+  created_at timestamp
+}
+
+Table push_tokens {
+  token text [pk, note: 'ExpoPushToken']
+  user_id uuid [not null]
+  updated_at timestamp
+}
+
+Ref: reportes.user_id > usuarios.id       // 1 usuario : N reportes
+Ref: push_tokens.user_id > usuarios.id    // 1 usuario : N tokens

@@ -1,0 +1,30 @@
+@startuml flujo_datos
+left to right direction
+title Flujo de datos - ConectaMich
+
+actor "Ciudadano" as CIU
+actor "Autoridad" as AUT
+
+rectangle "App movil\nConectaMich" as APP
+rectangle "Trigger BD + pg_net" as TRG
+rectangle "Google Maps" as GM
+rectangle "Expo Push / FCM" as EX
+
+database "Auth" as AUTH
+database "reportes" as REP
+database "push_tokens" as TOK
+database "Storage fotos" as ST
+
+CIU --> APP : login / datos del reporte
+APP --> AUTH : valida
+AUTH --> APP : sesion
+APP --> REP : inserta / lee
+APP --> TOK : guarda token
+APP --> ST : sube fotos
+GM --> APP : tiles / geocoding
+APP --> CIU : mapa / aviso
+AUT --> REP : UPDATE estado
+REP --> TRG : cambio de estado
+TRG --> EX : push al dueno
+EX --> APP : notificacion
+@enduml

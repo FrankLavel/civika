@@ -1,0 +1,441 @@
+<title>Diagramas ConectaMich</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground: #eef1f6; --ink: #0f1b2d; --muted: #5b6778; --faint: #8a94a6;
+    --line: #d7dde7; --navy: #16324f; --blue: #2563eb; --blue-soft: #e6eefb;
+    --paper: #ffffff; --paper-line: #cfd6e2;
+    --shadow: 0 1px 2px rgba(15,27,45,.06), 0 12px 30px -18px rgba(15,27,45,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0a1524; --ink: #eaf0f8; --muted: #9fb0c6; --faint: #6f8098;
+      --line: #24344b; --blue: #6ea0ff; --blue-soft: #16294a; --navy: #cfe0f5;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0a1524; --ink: #eaf0f8; --muted: #9fb0c6; --faint: #6f8098;
+    --line: #24344b; --blue: #6ea0ff; --blue-soft: #16294a; --navy: #cfe0f5;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header.masthead { border-bottom: 2px solid var(--navy); padding-bottom: 22px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--blue); }
+  h1 { font-family: "Sora", sans-serif; font-weight: 700; font-size: clamp(30px, 5vw, 46px); line-height: 1.05; letter-spacing: -.02em; margin: 10px 0 6px; text-wrap: balance; }
+  .lede { color: var(--muted); font-size: 16px; max-width: 62ch; margin: 0; }
+  .stackrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 500; color: var(--navy); background: var(--blue-soft); border: 1px solid color-mix(in srgb, var(--blue) 30%, transparent); padding: 5px 11px; border-radius: 999px; }
+
+  section { margin-top: 46px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+  .sec-num { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 13px; color: var(--faint); border: 1px solid var(--line); border-radius: 7px; padding: 2px 8px; flex: none; }
+  h2 { font-family: "Sora", sans-serif; font-weight: 600; font-size: clamp(20px, 3vw, 26px); letter-spacing: -.01em; margin: 0; }
+  .desc { color: var(--muted); margin: 6px 0 0 0; max-width: 68ch; font-size: 15px; }
+  .claim { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); border-left: 3px solid var(--blue); padding: 2px 0 2px 12px; }
+  .claim b { color: var(--ink); font-weight: 600; }
+  .claim code { font-family: "IBM Plex Mono", monospace; font-size: .92em; }
+
+  .canvas { margin-top: 18px; background: var(--paper); border: 1px solid var(--paper-line); border-radius: 14px; box-shadow: var(--shadow); padding: 22px; overflow-x: auto; }
+  figure { margin: 0; }
+  figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); text-align: center; }
+
+  /* SVG dibujado a mano — UML clásico, blanco y negro, líneas rectas */
+  .dgm { display: block; width: 100%; height: auto; }
+  .dgm.narrow { max-width: 560px; margin: 0 auto; }
+  .dgm text { font-family: "IBM Plex Sans", sans-serif; fill: #171717; }
+  .dgm .oval, .dgm .box { fill: #fff; stroke: #171717; stroke-width: 2; }
+  .dgm .bnd, .dgm .grp { fill: none; stroke: #171717; stroke-width: 2; }
+  .dgm .grp { stroke-width: 1.6; }
+  .dgm .fig { fill: none; stroke: #171717; stroke-width: 2; stroke-linecap: round; }
+  .dgm .assoc { stroke: #171717; stroke-width: 1.6; fill: none; }
+  .dgm .flow { stroke: #171717; stroke-width: 1.7; fill: none; }
+  .dgm .dash { stroke-dasharray: 7 5; }
+  .dgm .div { stroke: #171717; stroke-width: 1.4; }
+  .dgm .uc { font-size: 14px; text-anchor: middle; }
+  .dgm .bx { font-size: 13px; text-anchor: middle; }
+  .dgm .bxs { font-size: 11px; text-anchor: middle; fill: #5b6270; }
+  .dgm .actor { font-size: 15px; text-anchor: middle; font-weight: 600; }
+  .dgm .sub { font-size: 12px; fill: #5b6270; text-anchor: middle; }
+  .dgm .btitle, .dgm .grptitle { font-size: 14px; font-weight: 600; }
+  .dgm .elabel { font-size: 12px; fill: #444; font-style: italic; }
+  .dgm .edge { font-size: 11.5px; fill: #333; text-anchor: middle; }
+  .dgm .ename { font-size: 13px; font-weight: 700; text-anchor: middle; }
+  .dgm .attr { font-size: 11.5px; font-family: "IBM Plex Mono", monospace; fill: #222; }
+  .dgm .card { font-size: 12px; font-weight: 600; fill: #171717; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; border: 1px solid #171717; }
+  .dot.recibido { background: #fff; } .dot.curso { background: #9aa3b2; } .dot.resuelto { background: #171717; }
+
+  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--faint); font-size: 13px; font-family: "IBM Plex Mono", monospace; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Documentación técnica · Ventanilla Única Metropolitana</p>
+    <h1>Diagramas de ConectaMich</h1>
+    <p class="lede">Casos de uso, arquitectura de componentes, modelo entidad–relación y flujo de datos de la app ciudadana de reportes urbanos para la zona conurbada Morelia–Tarímbaro.</p>
+    <div class="stackrow">
+      <span class="chip">React Native · Expo</span>
+      <span class="chip">Supabase (Auth · Postgres · Storage)</span>
+      <span class="chip">Google Maps SDK</span>
+      <span class="chip">Expo Push → FCM</span>
+    </div>
+  </header>
+
+  <!-- 1 · CASOS DE USO -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Diagrama de casos de uso</h2></div>
+    <p class="desc">Actores (monigotes) y casos de uso (óvalos) dentro de la frontera del sistema, unidos por líneas rectas.</p>
+    <div class="canvas">
+      <figure>
+        <svg class="dgm" style="max-width:640px;margin:0 auto" viewBox="0 0 780 915" role="img" aria-label="Casos de uso de ConectaMich con los actores Ciudadano y Autoridad">
+          <defs>
+            <marker id="uc-arrow" markerWidth="12" markerHeight="12" refX="8.5" refY="3.2" orient="auto">
+              <path d="M0.5,0.5 L8.5,3.2 L0.5,5.9" fill="none" stroke="#171717" stroke-width="1.5"/>
+            </marker>
+          </defs>
+          <rect class="bnd" x="300" y="44" width="384" height="836" rx="4"/>
+          <text class="btitle" x="316" y="74">Sistema ConectaMich</text>
+
+          <line class="assoc" x1="150" y1="392" x2="374" y2="104"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="194"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="284"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="374"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="464"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="554"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="644"/>
+          <line class="assoc" x1="150" y1="392" x2="374" y2="734"/>
+          <line class="assoc" x1="700" y1="792" x2="610" y2="824"/>
+          <line class="assoc dash" x1="610" y1="820" x2="640" y2="820"/>
+          <line class="assoc dash" x1="640" y1="820" x2="640" y2="742"/>
+          <line class="assoc dash" x1="640" y1="742" x2="612" y2="740" marker-end="url(#uc-arrow)"/>
+          <text class="elabel" x="648" y="786">«dispara»</text>
+
+          <ellipse class="oval" cx="492" cy="104" rx="118" ry="33"/>
+          <text class="uc" x="492" y="100">Registrarse /</text><text class="uc" x="492" y="118">Iniciar sesión</text>
+          <ellipse class="oval" cx="492" cy="194" rx="118" ry="33"/>
+          <text class="uc" x="492" y="190">Ver mapa</text><text class="uc" x="492" y="208">metropolitano</text>
+          <ellipse class="oval" cx="492" cy="284" rx="118" ry="33"/>
+          <text class="uc" x="492" y="280">Filtrar por</text><text class="uc" x="492" y="298">categoría y estado</text>
+          <ellipse class="oval" cx="492" cy="374" rx="118" ry="33"/>
+          <text class="uc" x="492" y="370">Crear reporte</text><text class="uc" x="492" y="388">(fotos + GPS)</text>
+          <ellipse class="oval" cx="492" cy="464" rx="118" ry="33"/>
+          <text class="uc" x="492" y="469">Ver mis reportes</text>
+          <ellipse class="oval" cx="492" cy="554" rx="118" ry="33"/>
+          <text class="uc" x="492" y="550">Ver detalle y</text><text class="uc" x="492" y="568">seguimiento</text>
+          <ellipse class="oval" cx="492" cy="644" rx="118" ry="33"/>
+          <text class="uc" x="492" y="649">Calificar la atención</text>
+          <ellipse class="oval" cx="492" cy="734" rx="118" ry="33"/>
+          <text class="uc" x="492" y="730">Recibir</text><text class="uc" x="492" y="748">notificaciones</text>
+          <ellipse class="oval" cx="492" cy="824" rx="118" ry="33"/>
+          <text class="uc" x="492" y="820">Actualizar estado</text><text class="uc" x="492" y="838">del reporte</text>
+
+          <circle class="fig" cx="120" cy="352" r="17"/>
+          <line class="fig" x1="120" y1="369" x2="120" y2="426"/>
+          <line class="fig" x1="90" y1="392" x2="150" y2="392"/>
+          <line class="fig" x1="120" y1="426" x2="96" y2="466"/>
+          <line class="fig" x1="120" y1="426" x2="144" y2="466"/>
+          <text class="actor" x="120" y="492">Ciudadano</text>
+          <text class="sub" x="120" y="510">(usuario de la app)</text>
+
+          <circle class="fig" cx="726" cy="742" r="17"/>
+          <line class="fig" x1="726" y1="759" x2="726" y2="816"/>
+          <line class="fig" x1="696" y1="782" x2="756" y2="782"/>
+          <line class="fig" x1="726" y1="816" x2="702" y2="856"/>
+          <line class="fig" x1="726" y1="816" x2="750" y2="856"/>
+          <text class="actor" x="724" y="882">Autoridad</text>
+          <text class="sub" x="724" y="900">(dashboard)</text>
+        </svg>
+        <figcaption>El ciudadano no cambia estados: esa acción es de la autoridad y «dispara» la notificación.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2 · ARQUITECTURA DE COMPONENTES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Arquitectura de componentes</h2></div>
+    <p class="desc">App móvil (pantallas, sesión, capa de datos y módulos nativos), backend Supabase y servicios externos. Cajas y líneas rectas.</p>
+    <div class="canvas">
+      <figure>
+        <svg class="dgm" viewBox="0 0 780 700" role="img" aria-label="Arquitectura de componentes de ConectaMich">
+          <defs>
+            <marker id="arwC" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto">
+              <path d="M0,0 L9,4 L0,8 z" fill="#171717"/>
+            </marker>
+          </defs>
+
+          <!-- Actor Ciudadano -->
+          <circle class="fig" cx="96" cy="40" r="13"/>
+          <line class="fig" x1="96" y1="53" x2="96" y2="88"/>
+          <line class="fig" x1="78" y1="66" x2="114" y2="66"/>
+          <line class="fig" x1="96" y1="88" x2="82" y2="110"/>
+          <line class="fig" x1="96" y1="88" x2="110" y2="110"/>
+          <text class="sub" x="96" y="128">Ciudadano</text>
+          <line class="flow" x1="118" y1="80" x2="180" y2="150" marker-end="url(#arwC)"/>
+          <text class="edge" x="170" y="118">usa</text>
+
+          <!-- Grupo App -->
+          <rect class="grp" x="40" y="150" width="596" height="150"/>
+          <text class="grptitle" x="52" y="172">App móvil — Expo / React Native</text>
+          <rect class="box" x="56" y="190" width="126" height="72"/>
+          <text class="bx" x="119" y="220">Pantallas</text><text class="bxs" x="119" y="238">Inicio · Reportar</text><text class="bxs" x="119" y="252">Mapa · Detalle</text>
+          <rect class="box" x="198" y="190" width="120" height="72"/>
+          <text class="bx" x="258" y="222">AuthContext</text><text class="bxs" x="258" y="240">sesión</text>
+          <rect class="box" x="334" y="190" width="140" height="72"/>
+          <text class="bx" x="404" y="216">Capa lib</text><text class="bxs" x="404" y="232">supabase · reportes</text><text class="bxs" x="404" y="248">push · notifications</text>
+          <rect class="box" x="490" y="190" width="130" height="72"/>
+          <text class="bx" x="555" y="216">Módulos nativos</text><text class="bxs" x="555" y="232">Location · Picker</text><text class="bxs" x="555" y="248">Maps · Notifications</text>
+
+          <!-- Google Maps (externo, arriba a la derecha) -->
+          <rect class="box" x="656" y="190" width="96" height="72"/>
+          <text class="bx" x="704" y="220">Google</text><text class="bx" x="704" y="238">Maps</text>
+          <line class="flow" x1="620" y1="226" x2="656" y2="226" marker-end="url(#arwC)"/>
+
+          <!-- Grupo Supabase -->
+          <rect class="grp" x="40" y="340" width="596" height="176"/>
+          <text class="grptitle" x="52" y="362">Supabase — Backend</text>
+          <rect class="box" x="56" y="382" width="110" height="64"/>
+          <text class="bx" x="111" y="418">Auth</text>
+          <rect class="box" x="182" y="378" width="180" height="82"/>
+          <text class="bx" x="272" y="406">Postgres</text><text class="bxs" x="272" y="424">reportes · push_tokens</text><text class="bxs" x="272" y="440">+ RLS</text>
+          <rect class="box" x="378" y="386" width="110" height="64"/>
+          <text class="bx" x="433" y="414">Storage</text><text class="bxs" x="433" y="430">fotos</text>
+          <rect class="box" x="504" y="378" width="116" height="82"/>
+          <text class="bx" x="562" y="410">Trigger</text><text class="bxs" x="562" y="428">notify_estado</text><text class="bxs" x="562" y="444">+ pg_net</text>
+
+          <!-- Grupo Externos -->
+          <rect class="grp" x="40" y="556" width="596" height="118"/>
+          <text class="grptitle" x="52" y="578">Servicios externos</text>
+          <rect class="box" x="56" y="596" width="130" height="58"/>
+          <text class="bx" x="121" y="622">Expo Push</text>
+          <rect class="box" x="204" y="596" width="110" height="58"/>
+          <text class="bx" x="259" y="629">FCM</text>
+          <rect class="box" x="360" y="596" width="150" height="58"/>
+          <text class="bx" x="435" y="620">Dashboard</text><text class="bxs" x="435" y="638">autoridad</text>
+
+          <!-- Actor Autoridad -->
+          <circle class="fig" cx="690" cy="600" r="13"/>
+          <line class="fig" x1="690" y1="613" x2="690" y2="648"/>
+          <line class="fig" x1="672" y1="626" x2="708" y2="626"/>
+          <line class="fig" x1="690" y1="648" x2="676" y2="668"/>
+          <line class="fig" x1="690" y1="648" x2="704" y2="668"/>
+          <text class="sub" x="690" y="686">Autoridad</text>
+          <line class="flow" x1="672" y1="625" x2="510" y2="625" marker-end="url(#arwC)"/>
+
+          <!-- Flechas App -> Supabase -->
+          <line class="flow" x1="258" y1="262" x2="120" y2="378" marker-end="url(#arwC)"/>
+          <text class="edge" x="160" y="322">sesión</text>
+          <line class="flow" x1="404" y1="262" x2="290" y2="378" marker-end="url(#arwC)"/>
+          <text class="edge" x="368" y="322">datos</text>
+          <line class="flow" x1="430" y1="262" x2="432" y2="386" marker-end="url(#arwC)"/>
+          <text class="edge" x="462" y="322">fotos</text>
+
+          <!-- Flujo backend de notificación -->
+          <line class="flow" x1="431" y1="596" x2="300" y2="460" marker-end="url(#arwC)"/>
+          <text class="edge" x="392" y="520">UPDATE estado</text>
+          <line class="flow" x1="362" y1="419" x2="504" y2="419" marker-end="url(#arwC)"/>
+          <text class="edge" x="433" y="410">cambio</text>
+          <line class="flow" x1="545" y1="460" x2="140" y2="596" marker-end="url(#arwC)"/>
+          <text class="edge" x="300" y="520">push</text>
+          <line class="flow" x1="186" y1="625" x2="204" y2="625" marker-end="url(#arwC)"/>
+          <line class="flow" x1="300" y1="596" x2="548" y2="262" marker-end="url(#arwC)"/>
+          <text class="edge" x="470" y="430">notificación</text>
+        </svg>
+        <figcaption>Un solo backend: Supabase concentra auth, datos y archivos. Firebase (FCM) entra solo como transporte de la notificación, no como base de datos.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3 · ENTIDAD RELACIÓN -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Diagrama entidad–relación</h2></div>
+    <p class="desc">Modelo en Postgres. Cada usuario posee sus reportes y sus tokens; las fotos viven en Storage y se referencian desde el reporte.</p>
+    <div class="canvas">
+      <figure>
+        <svg class="dgm" viewBox="0 0 780 560" role="img" aria-label="Diagrama entidad relación de ConectaMich">
+          <!-- USUARIOS -->
+          <rect class="box" x="60" y="60" width="200" height="118"/>
+          <line class="div" x1="60" y1="88" x2="260" y2="88"/>
+          <text class="ename" x="160" y="80">USUARIOS</text>
+          <text class="attr" x="74" y="110">id            PK</text>
+          <text class="attr" x="74" y="132">email</text>
+          <text class="attr" x="74" y="154">nombre</text>
+
+          <!-- REPORTES -->
+          <rect class="box" x="470" y="40" width="250" height="360"/>
+          <line class="div" x1="470" y1="68" x2="720" y2="68"/>
+          <text class="ename" x="595" y="60">REPORTES</text>
+          <text class="attr" x="484" y="92">id            PK</text>
+          <text class="attr" x="484" y="114">user_id       FK</text>
+          <text class="attr" x="484" y="136">folio         UK</text>
+          <text class="attr" x="484" y="158">categoria</text>
+          <text class="attr" x="484" y="180">titulo</text>
+          <text class="attr" x="484" y="202">descripcion</text>
+          <text class="attr" x="484" y="224">direccion</text>
+          <text class="attr" x="484" y="246">estado</text>
+          <text class="attr" x="484" y="268">prioridad</text>
+          <text class="attr" x="484" y="290">lat  /  lng</text>
+          <text class="attr" x="484" y="312">imagenes[]</text>
+          <text class="attr" x="484" y="334">created_at</text>
+
+          <!-- PUSH_TOKENS -->
+          <rect class="box" x="60" y="330" width="220" height="110"/>
+          <line class="div" x1="60" y1="358" x2="280" y2="358"/>
+          <text class="ename" x="170" y="350">PUSH_TOKENS</text>
+          <text class="attr" x="74" y="382">token         PK</text>
+          <text class="attr" x="74" y="404">user_id       FK</text>
+          <text class="attr" x="74" y="426">updated_at</text>
+
+          <!-- FOTOS -->
+          <rect class="box" x="470" y="440" width="220" height="92"/>
+          <line class="div" x1="470" y1="468" x2="690" y2="468"/>
+          <text class="ename" x="580" y="460">FOTOS (Storage)</text>
+          <text class="attr" x="484" y="492">path          PK</text>
+          <text class="attr" x="484" y="514">url</text>
+
+          <!-- Relación USUARIOS - REPORTES -->
+          <line class="assoc" x1="260" y1="100" x2="470" y2="100"/>
+          <text class="card" x="278" y="92">1</text>
+          <line class="assoc" x1="452" y1="90" x2="470" y2="100"/>
+          <line class="assoc" x1="452" y1="110" x2="470" y2="100"/>
+          <text class="card" x="446" y="128">N</text>
+          <text class="edge" x="365" y="92">crea</text>
+
+          <!-- Relación USUARIOS - PUSH_TOKENS -->
+          <line class="assoc" x1="160" y1="178" x2="160" y2="330"/>
+          <text class="card" x="170" y="198">1</text>
+          <line class="assoc" x1="150" y1="312" x2="160" y2="330"/>
+          <line class="assoc" x1="170" y1="312" x2="160" y2="330"/>
+          <text class="card" x="176" y="318">N</text>
+          <text class="edge" x="196" y="258">registra</text>
+
+          <!-- Relación REPORTES - FOTOS -->
+          <line class="assoc" x1="590" y1="400" x2="588" y2="440"/>
+          <text class="card" x="600" y="418">1</text>
+          <line class="assoc" x1="578" y1="422" x2="588" y2="440"/>
+          <line class="assoc" x1="598" y1="422" x2="588" y2="440"/>
+          <text class="card" x="606" y="436">0–3</text>
+          <text class="edge" x="636" y="422">adjunta</text>
+        </svg>
+        <figcaption>RLS: cada quien inserta y ve lo suyo; el mapa lee <code>reportes</code> de forma pública para autenticados. estado ∈ {recibido, en_curso, resuelto}.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4 · FLUJO DE DATOS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Diagrama de flujo de datos</h2></div>
+    <p class="desc">Actores externos (monigotes), procesos (círculos), almacenes de datos (cajas) y servicios, con flechas rectas etiquetadas.</p>
+    <div class="canvas">
+      <figure>
+        <svg class="dgm" viewBox="0 0 780 620" role="img" aria-label="Diagrama de flujo de datos de ConectaMich">
+          <defs>
+            <marker id="arwD" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto">
+              <path d="M0,0 L9,4 L0,8 z" fill="#171717"/>
+            </marker>
+          </defs>
+
+          <!-- Actor Ciudadano -->
+          <circle class="fig" cx="70" cy="250" r="16"/>
+          <line class="fig" x1="70" y1="266" x2="70" y2="318"/>
+          <line class="fig" x1="44" y1="288" x2="96" y2="288"/>
+          <line class="fig" x1="70" y1="318" x2="50" y2="352"/>
+          <line class="fig" x1="70" y1="318" x2="90" y2="352"/>
+          <text class="actor" x="70" y="378">Ciudadano</text>
+
+          <!-- Proceso App -->
+          <circle class="box" cx="300" cy="250" r="66"/>
+          <text class="bx" x="300" y="246">App móvil</text>
+          <text class="bxs" x="300" y="264">ConectaMich</text>
+
+          <!-- Google Maps -->
+          <rect class="box" x="222" y="60" width="156" height="54"/>
+          <text class="bx" x="300" y="84">Google Maps</text><text class="bxs" x="300" y="100">tiles · geocoding</text>
+
+          <!-- Almacenes -->
+          <rect class="box" x="470" y="60" width="180" height="46"/>
+          <line class="div" x1="502" y1="60" x2="502" y2="106"/>
+          <text class="bxs" x="486" y="88">D1</text><text class="bx" x="580" y="88">Auth</text>
+          <rect class="box" x="470" y="128" width="180" height="46"/>
+          <line class="div" x1="502" y1="128" x2="502" y2="174"/>
+          <text class="bxs" x="486" y="156">D2</text><text class="bx" x="580" y="156">reportes</text>
+          <rect class="box" x="470" y="196" width="180" height="46"/>
+          <line class="div" x1="502" y1="196" x2="502" y2="242"/>
+          <text class="bxs" x="486" y="224">D3</text><text class="bx" x="580" y="224">push_tokens</text>
+          <rect class="box" x="470" y="264" width="180" height="46"/>
+          <line class="div" x1="502" y1="264" x2="502" y2="310"/>
+          <text class="bxs" x="486" y="292">D4</text><text class="bx" x="580" y="292">Storage fotos</text>
+
+          <!-- Proceso Trigger -->
+          <circle class="box" cx="580" cy="430" r="56"/>
+          <text class="bx" x="580" y="426">Trigger BD</text>
+          <text class="bxs" x="580" y="444">+ pg_net</text>
+
+          <!-- Expo / FCM -->
+          <rect class="box" x="250" y="470" width="170" height="60"/>
+          <text class="bx" x="335" y="495">Expo Push</text><text class="bxs" x="335" y="513">→ FCM</text>
+
+          <!-- Actor Autoridad -->
+          <circle class="fig" cx="712" cy="452" r="16"/>
+          <line class="fig" x1="712" y1="468" x2="712" y2="516"/>
+          <line class="fig" x1="686" y1="490" x2="738" y2="490"/>
+          <line class="fig" x1="712" y1="516" x2="692" y2="548"/>
+          <line class="fig" x1="712" y1="516" x2="732" y2="548"/>
+          <text class="actor" x="712" y="574">Autoridad</text>
+
+          <!-- Flujos -->
+          <line class="flow" x1="96" y1="240" x2="238" y2="222" marker-end="url(#arwD)"/>
+          <text class="edge" x="165" y="212">login · reporte</text>
+          <line class="flow" x1="238" y1="278" x2="96" y2="300" marker-end="url(#arwD)"/>
+          <text class="edge" x="168" y="312">mapa · aviso</text>
+
+          <line class="flow" x1="300" y1="184" x2="300" y2="116" marker-end="url(#arwD)"/>
+          <text class="edge" x="345" y="150">geocoding</text>
+
+          <line class="flow" x1="366" y1="228" x2="470" y2="90" marker-end="url(#arwD)"/>
+          <text class="edge" x="430" y="150">valida</text>
+          <line class="flow" x1="366" y1="240" x2="470" y2="150" marker-end="url(#arwD)"/>
+          <text class="edge" x="452" y="196">insert / lee</text>
+          <line class="flow" x1="366" y1="258" x2="470" y2="216" marker-end="url(#arwD)"/>
+          <text class="edge" x="430" y="252">token</text>
+          <line class="flow" x1="356" y1="278" x2="470" y2="286" marker-end="url(#arwD)"/>
+          <text class="edge" x="430" y="300">fotos</text>
+
+          <line class="flow" x1="694" y1="452" x2="612" y2="200" marker-end="url(#arwD)"/>
+          <text class="edge" x="686" y="330">UPDATE estado</text>
+          <line class="flow" x1="580" y1="242" x2="580" y2="374" marker-end="url(#arwD)"/>
+          <text class="edge" x="628" y="320">cambio</text>
+          <line class="flow" x1="524" y1="430" x2="420" y2="470" marker-end="url(#arwD)"/>
+          <text class="edge" x="478" y="440">push</text>
+          <line class="flow" x1="300" y1="470" x2="300" y2="316" marker-end="url(#arwD)"/>
+          <text class="edge" x="250" y="400">notificación</text>
+        </svg>
+        <div class="legend">
+          <span><i class="dot recibido"></i> recibido</span>
+          <span><i class="dot curso"></i> en_curso</span>
+          <span><i class="dot resuelto"></i> resuelto</span>
+        </div>
+        <figcaption>El cambio de estado hecho por la autoridad recorre reportes → trigger → Expo/FCM → app y llega como notificación aunque la app esté cerrada.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <footer>
+    <span>ConectaMich · Hackatón</span>
+    <span>Morelia – Tarímbaro – Jacona</span>
+  </footer>
+</div>
